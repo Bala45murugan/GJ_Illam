@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GJ இல்லம் – House Warming Invitation</title>
+
+<meta name="theme-color" content="#2b1b0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<style>
+body{
+  margin:0;
+  font-family:"Segoe UI",sans-serif;
+  background:radial-gradient(circle at top,#2b1b0e,#000);
+  color:#fff;
+  overflow:hidden;
+}
+
+/* Language switch */
+.lang{
+  position:fixed;
+  top:15px;
+  right:20px;
+  z-index:50;
+}
+.lang span{
+  cursor:pointer;
+  color:gold;
+  margin:0 6px;
+  font-weight:600;
+}
+
+/* ================= DOOR ================= */
+#doorScreen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle,#3a2412,#120a04);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.door-frame{ perspective:1200px; }
+
+.door{
+  width:240px;
+  height:420px;
+  background:repeating-linear-gradient(
+    90deg,#6b3f1d,#6b3f1d 14px,#5a3317 14px,#5a3317 28px
+  );
+  border-radius:6px;
+  transform-origin:left;
+  transition:transform 1.6s ease;
+  box-shadow:inset 0 0 25px rgba(0,0,0,.8),
+             0 0 40px rgba(255,215,0,.4);
+  position:relative;
+}
+
+.handle{
+  position:absolute;
+  right:18px;
+  top:50%;
+  width:12px;
+  height:32px;
+  background:radial-gradient(circle,gold,#b8860b);
+  border-radius:6px;
+  transform:translateY(-50%);
+}
+
+.tap{
+  margin-top:25px;
+  color:gold;
+  font-size:18px;
+  animation:pulse 1.4s infinite;
+}
+@keyframes pulse{50%{opacity:.5;}}
+
+/* ================= INVITE ================= */
+#invite{
+  display:none;
+  height:100vh;
+  overflow-y:auto;
+  padding:40px 15px 60px;
+  text-align:center;
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+    url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4MTE3OTM5My1pbWFnZS1rd3Z5MG94eC5qcGc.jpg")
+    center/cover no-repeat fixed;
+}
+
+/* ================= CARD ================= */
+.card{
+  max-width:740px;
+  margin:auto;
+  position:relative;
+  padding:38px 34px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(255,215,0,.6);
+  box-shadow:0 0 45px rgba(255,215,0,.35);
+}
+
+/* inner blurred image */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4MTE3OTM5My1pbWFnZS1rd3Z5MG94eC5qcGc.jpg")
+    center/cover no-repeat;
+  filter:blur(12px);
+  transform:scale(1.1);
+  z-index:0;
+}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:1;
+}
+.card *{ position:relative; z-index:2; }
+
+/* Nameplate */
+.nameplate-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:18px 0 24px;
+}
+.rope{
+  width:2px;height:20px;
+  background:#c9a24d;
+  margin:0 22px;
+}
+.nameplate{
+  background:linear-gradient(#6b3f1d,#3e2311);
+  padding:14px 42px;
+  border:2px solid gold;
+  border-radius:6px;
+  color:gold;
+  font-size:22px;
+  font-weight:bold;
+  box-shadow:0 0 22px rgba(255,215,0,.4);
+  animation:sway 3s ease-in-out infinite;
+}
+@keyframes sway{50%{transform:rotate(1deg);}}
+
+/* Text */
+h3{color:gold;}
+p{line-height:1.7;font-size:16px;}
+
+a.map{
+  display:inline-block;
+  margin-top:18px;
+  color:gold;
+  text-decoration:none;
+  border:1px solid gold;
+  padding:10px 22px;
+  border-radius:24px;
+}
+
+/* Petals */
+.petal{
+  position:fixed;
+  top:-20px;
+  width:10px;
+  height:10px;
+  background:pink;
+  border-radius:50%;
+  opacity:.7;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="lang">
+  <span onclick="setLang('en')">EN</span> |
+  <span onclick="setLang('ta')">தமிழ்</span>
+</div>
+
+<!-- Door -->
+<div id="doorScreen" onclick="openDoor()">
+  <div class="door-frame">
+    <div class="door" id="door">
+      <div class="handle"></div>
+    </div>
+  </div>
+  <div class="tap">Tap to Open</div>
+</div>
+
+<!-- Invitation -->
+<div id="invite">
+  <div class="card" id="content"></div>
+</div>
+
+<!-- AUDIO (keep files in same folder) -->
+<audio id="doorSound" src="./opening-door-411632.mp3"></audio>
+<audio id="bell" src="temple-bell.mp3"></audio>
+<audio id="music" src="./Dude Music.mp3" loop></audio>
+
+<script>
+const doorSound=document.getElementById("doorSound");
+const bell=document.getElementById("bell");
+const music=document.getElementById("music");
+
+doorSound.volume=.8;
+bell.volume=.7;
+music.volume=.4;
+
+/* vibration helper */
+function vibrate(pattern){
+  if(navigator.vibrate){ navigator.vibrate(pattern); }
+}
+
+const content={
+en:`
+<h3>✨ House Warming Invitation ✨</h3>
+<p>With immense joy and divine blessings, we invite you to grace the</p>
+
+<div class="nameplate-wrap">
+<div class="rope"></div>
+<div class="nameplate">GJ இல்லம்</div>
+<div class="rope"></div>
+</div>
+
+<p>
+📅 <b>Date:</b> May 29, 2026<br>
+🌅 <b>Day:</b> Friday<br>
+⏰ <b>Time:</b> 4:30 AM<br>
+📍 <b>Place:</b> Koradacheri
+</p>
+
+<a class="map" target="_blank"
+href="https://maps.app.goo.gl/dVnT5N46sDn5CLET7">
+📍 Open in Google Maps
+</a>
+
+<p><br><b>Warm Regards,<br>Family</b></p>
+`,
+ta:`
+<h3>✨ புதுமனை புகுவிழா அழைப்பு ✨</h3>
+<p>மிகுந்த மகிழ்ச்சியுடனும் இறைவன் அருளுடனும் நடைபெறும்</p>
+
+<div class="nameplate-wrap">
+<div class="rope"></div>
+<div class="nameplate">GJ இல்லம்</div>
+<div class="rope"></div>
+</div>
+
+<p>
+📅 <b>நாள்:</b> 29 மே 2026<br>
+🌅 <b>Day:</b> வெள்ளிக்கிழமை<br>
+⏰ <b>நேரம்:</b> காலை 4:30<br>
+📍 <b>இடம்:</b> கொரடாச்சேரி
+</p>
+
+<a class="map" target="_blank"
+href="https://maps.app.goo.gl/dVnT5N46sDn5CLET7">
+📍 Google Maps திறக்க
+</a>
+
+<p><br><b>அன்புடன்,<br>குடும்பத்தினர்</b></p>
+`
+};
+
+function openDoor(){
+  vibrate([80,60,80]);       // knock feel
+  doorSound.play();
+
+  setTimeout(()=>{
+    vibrate([150,80,150,300]);
+    bell.play();
+    music.play();
+  },600);
+
+  door.style.transform="rotateY(-115deg)";
+
+  setTimeout(()=>{
+    doorScreen.style.display="none";
+    invite.style.display="block";
+    setLang("en");
+    petals();
+  },1600);
+}
+
+function setLang(lang){
+  document.getElementById("content").innerHTML=content[lang];
+}
+
+function petals(){
+  for(let i=0;i<22;i++){
+    const p=document.createElement("div");
+    p.className="petal";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=6+Math.random()*5+"s";
+    document.body.appendChild(p);
+  }
+}
+</script>
+
+</body>
+</html>
