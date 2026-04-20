@@ -17,8 +17,8 @@ body{
 /* LANGUAGE */
 .lang{
   position:fixed;
-  top:15px;
-  right:20px;
+  top:8px;          
+  right:15px;
   color:gold;
   z-index:50;
 }
@@ -274,6 +274,20 @@ p{margin:6px 0; line-height:1.4;}
   .title{font-size:14px;}
   .door-text{font-size:12px;}
   .tap{font-size:13px;}
+  @media (max-width:480px){
+
+  .lang{
+    top:6px;        /* even tighter for mobile */
+    right:12px;
+    font-size:13px;
+  }
+
+  #invite{
+    align-items:flex-start;   /* 🔥 moves card slightly up */
+    padding-top:40px;         /* controls top gap perfectly */
+  }
+
+}
 }
 </style>
 </head>
