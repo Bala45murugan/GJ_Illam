@@ -201,8 +201,53 @@ body{
   border-radius:50%;
   animation:fall linear infinite;
 }
+/* NAMEPLATE */
+.nameplate-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:12px 0 18px;
+}
+
+.rope{
+  width:2px;
+  height:18px;
+  background:#c9a24d;
+  margin:0 18px;
+}
+
+.nameplate{
+  background:linear-gradient(#6b3f1d,#3e2311);
+  padding:10px 28px;
+  border:2px solid gold;
+  border-radius:6px;
+  color:gold;
+  font-size:18px;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow:0 0 15px rgba(255,215,0,.4);
+  font-family:serif;
+}
+/* Swing Animation */
+.nameplate{
+  animation:sway 3s ease-in-out infinite;
+  transform-origin:top center; /* 🔥 makes it hang naturally */
+}
+
+@keyframes sway{
+  0%{ transform:rotate(-1.5deg); }
+  50%{ transform:rotate(1.5deg); }
+  100%{ transform:rotate(-1.5deg); }
+}
 @keyframes fall{
   to{transform:translateY(110vh);}
+}
+.light{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle, rgba(255,215,0,0.4), transparent 70%);
+  opacity:0;
+  transition:opacity 1s ease;
 }
 </style>
 </head>
@@ -217,7 +262,7 @@ body{
 <!-- DOOR -->
 <div id="doorScreen" onclick="openDoor()">
  <div class="door-container">
-
+<div class="light"></div>
   <div class="door left-door">
     <img class="ganesha-img" src="https://png.pngtree.com/png-vector/20250121/ourmid/pngtree-ganesha-the-embodiment-of-prosperity-and-joy-png-image_15287837.png">
     <div class="door-text doorText">Welcome</div>
@@ -259,7 +304,11 @@ With joy, we invite you to celebrate this beautiful new beginning with us !!!
 
   <img class="home-img"
   src="https://static.vecteezy.com/system/resources/thumbnails/049/514/749/small/beautiful-suburban-family-house-front-view-transparent-png.png">
-
+<div class="nameplate-wrap">
+  <div class="rope"></div>
+  <div class="nameplate">GJ Illam</div>
+  <div class="rope"></div>
+</div>
   <div class="date-box">
     <div class="date-left">FRIDAY</div>
     <div class="date-center">
@@ -288,6 +337,11 @@ With joy, we invite you to celebrate this beautiful new beginning with us !!!
   <img class="home-img"
   src="https://static.vecteezy.com/system/resources/thumbnails/049/514/749/small/beautiful-suburban-family-house-front-view-transparent-png.png">
 
+<div class="nameplate-wrap">
+  <div class="rope"></div>
+  <div class="nameplate">GJ இல்லம்</div>
+  <div class="rope"></div>
+</div>
   <div class="date-box">
     <div class="date-left">வெள்ளி</div>
     <div class="date-center">
@@ -325,7 +379,7 @@ function updateDoorLanguage(){
 function openDoor(){
   doorSound.currentTime=0;
   doorSound.play().catch(()=>{});
-
+document.querySelector(".light").style.opacity = 1;
   document.querySelector(".left-door").style.transform="rotateY(-120deg)";
   document.querySelector(".right-door").style.transform="rotateY(120deg)";
 
